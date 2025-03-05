@@ -1,0 +1,27 @@
+version: "3"
+networks:
+  net:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.22.3.0/24
+
+services:
+  node:
+    container_name: my-node-container
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        UID: 1000
+        GID: 1000
+    working_dir: /app
+    volumes:
+      - ./:/app
+    networks:
+      net:
+        #ipv4_address: 172.22.3.2
+    ports:
+      - "80:80"
+    command: "node server.js"
